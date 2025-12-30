@@ -1,0 +1,17 @@
+{
+  "writeMode": false,
+  "volumeThreshold": 10,
+  "addressingTerm": "чувак",
+  "coreStyle": "phoenix-flame",
+  "bgColor": "default",
+  "coreSize": "large",
+  "musicPath": "/home/mods/Музыка/funks",
+  "appKeywords": {
+    "ютуб": "firefox https://youtube.com",
+    "телеграм": "Telegram",
+    "код": "code .",
+    "браузер": "firefox",
+    "терминал": "kgx -- zsh",
+    "папку": "xdg-open ~/"
+  }
+}

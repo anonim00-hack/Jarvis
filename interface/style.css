@@ -1,0 +1,808 @@
+:root {
+    --primary: #00f0ff;
+    --primary-glow: rgba(0, 240, 255, 0.6);
+    --secondary: #b967ff;
+    --bg: #0a0a12;
+    --surface: rgba(255, 255, 255, 0.05);
+    --text: #ffffff;
+    --text-secondary: #a0a0c0;
+}
+
+/* Настройки фона */
+body[data-bg="default"] {
+    --bg: #0a0a12;
+}
+
+body[data-bg="dark-gray"] {
+    --bg: #1c1c1c;
+}
+
+body[data-bg="black"] {
+    --bg: #000000;
+}
+
+/* --- ЦВЕТОВЫЕ СХЕМЫ ДЛЯ КАЖДОГО ЯДРА --- */
+body[data-style="hexa-reactor"] {
+    --primary: #39ff14;
+    --primary-glow: rgba(57, 255, 20, 0.6);
+}
+
+body[data-style="chrono-fluid"] {
+    --primary: #ff006e;
+    --primary-glow: rgba(255, 0, 110, 0.6);
+}
+
+body[data-style="data-echo"] {
+    --primary: #00ffff;
+    --primary-glow: rgba(0, 255, 255, 0.7);
+}
+
+body[data-style="graviton-well"] {
+    --primary: #8a2be2;
+    --primary-glow: rgba(138, 43, 226, 0.6);
+}
+
+body[data-style="sentinel-eye"] {
+    --primary: #ff1e00;
+    --primary-glow: rgba(255, 30, 0, 0.7);
+}
+
+body[data-style="bio-synth"] {
+    --primary: #00ff55;
+    --primary-glow: rgba(0, 255, 85, 0.6);
+}
+
+body[data-style="flux-capacitor"] {
+    --primary: #ffffff;
+    --primary-glow: rgba(255, 255, 255, 0.7);
+}
+
+body[data-style="hyper-glitch"] {
+    --primary: #7cffde;
+    --primary-glow: rgba(255, 0, 64, 0.7);
+}
+
+body[data-style="arc-stabilizer"] {
+    --primary: #00f0ff;
+    --primary-glow: rgba(0, 240, 255, 0.7);
+}
+
+body[data-style="phoenix-flame"] {
+    --primary: #ff6a00;
+    --primary-glow: rgba(255, 106, 0, 0.7);
+}
+
+body[data-style="monolith-core"] {
+    --primary: #e0e0e0;
+    --primary-glow: rgba(224, 224, 224, 0.7);
+}
+
+body[data-style="vector-field"] {
+    --primary: #00ffcc;
+    --primary-glow: rgba(0, 255, 204, 0.7);
+}
+
+body[data-style="singularity"] {
+    --primary: #ffffff;
+    --primary-glow: rgba(255, 255, 255, 0.3);
+}
+
+body[data-style="aether-orb"] {
+    --primary: #b967ff;
+    --primary-glow: rgba(185, 103, 255, 0.6);
+}
+
+body[data-style="industrial-piston"] {
+    --primary: #ffaa00;
+    --primary-glow: rgba(255, 170, 0, 0.7);
+}
+
+body[data-style="quantum-lock"] {
+    --primary: #00ffff;
+    --primary-glow: rgba(0, 255, 255, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.5s ease;
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* ====================== БАЗОВЫЙ CORE - МИНИМАЛИСТИЧНЫЙ ====================== */
+.core {
+    margin: 0 auto 1.5rem;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    filter: drop-shadow(0 0 20px var(--primary-glow));
+    background: radial-gradient(circle at 30% 30%, var(--primary) 0%, transparent 70%);
+}
+
+.core[data-size="small"] {
+    width: 130px;
+    height: 130px;
+}
+
+.core[data-size="medium"] {
+    width: 180px;
+    height: 180px;
+}
+
+.core[data-size="large"] {
+    width: 240px;
+    height: 240px;
+}
+
+.core-inner {
+    position: absolute;
+    inset: 3px;
+    border-radius: inherit;
+    background: var(--bg);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        inset 0 0 20px rgba(0, 240, 255, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.core-center {
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 20px var(--primary-glow);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+/* ====================== 16 МИНИМАЛИСТИЧНЫХ ЯДЕР ====================== */
+
+/* 1. HEXA-REACTOR */
+.core.hexa-reactor {
+    --primary: #39ff14;
+    --primary-glow: rgba(57, 255, 20, 0.6);
+    border-radius: 15%;
+    background: linear-gradient(135deg, var(--primary) 0%, #00cc00 100%);
+}
+
+.core.hexa-reactor .core-inner {
+    background: var(--bg);
+}
+
+.core.hexa-reactor .core-center {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* 2. CHRONO-FLUID */
+.core.chrono-fluid {
+    --primary: #ff006e;
+    --primary-glow: rgba(255, 0, 110, 0.6);
+    background: linear-gradient(135deg, #ff006e, #00ffff, #8a2be2);
+    animation: hue-rotate 15s linear infinite;
+}
+
+@keyframes hue-rotate {
+    to {
+        filter: hue-rotate(360deg);
+    }
+}
+
+.core.chrono-fluid .core-center {
+    background: #fff;
+    box-shadow: 0 0 30px #fff;
+}
+
+/* 3. DATA-ECHO */
+.core.data-echo {
+    --primary: #00ffff;
+    --primary-glow: rgba(0, 255, 255, 0.7);
+    background: #000;
+    border: 2px solid var(--primary);
+}
+
+.core.data-echo .core-inner {
+    background: repeating-linear-gradient(transparent,
+            transparent 5px,
+            rgb(0, 255, 255) 5px,
+            rgb(0, 255, 128) 10px);
+    animation: rotating 3s infinite;
+}
+
+@keyframes rotating {
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.core.data-echo .core-center {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* 4. GRAVITON-WELL */
+.core.graviton-well {
+    --primary: #8a2be2;
+    --primary-glow: rgba(138, 43, 226, 0.6);
+    background: radial-gradient(circle at 50% 50%, #8a2be2 0%, #4b0082 100%);
+}
+
+.core.graviton-well .core-center {
+    animation: pulse 4s ease-in-out infinite;
+    background: radial-gradient(circle, #fff 0%, var(--primary) 100%);
+}
+
+/* 5. SENTINEL-EYE */
+.core.sentinel-eye {
+    --primary: #ff1e00;
+    --primary-glow: rgba(255, 30, 0, 0.7);
+    clip-path: polygon(50% 5%, 90% 25%, 95% 75%, 50% 95%, 5% 75%, 10% 25%);
+    background: linear-gradient(135deg, #ff1e00, #ff6b35);
+}
+
+.core.sentinel-eye .core-center {
+    width: 20%;
+    height: 20%;
+    background: #fff;
+    animation: blink 3s ease-in-out infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    80%,
+    100% {
+        opacity: 1;
+    }
+
+    85%,
+    95% {
+        opacity: 0.3;
+    }
+}
+
+/* 6. BIO-SYNTH */
+.core.bio-synth {
+    --primary: #00ff55;
+    --primary-glow: rgba(0, 255, 85, 0.6);
+}
+
+.core.bio-synth .core-inner {
+    background: repeating-linear-gradient(transparent,
+            transparent 20px,
+            rgb(0, 255, 85) 5px,
+            rgb(0, 255, 85) 10px);
+}
+
+.core.bio-synth .core-center {
+    display: none;
+}
+
+/* 7. FLUX-CAPACITOR */
+.core.flux-capacitor {
+    --primary: #ffffff;
+    --primary-glow: rgba(255, 255, 255, 0.7);
+    background: transparent;
+    border: 2px solid var(--primary);
+}
+
+.core.flux-capacitor .core-inner {
+    background: transparent;
+    border: 1px solid #ff00ff;
+}
+
+.core.flux-capacitor .core-center {
+    background: #fff;
+    box-shadow: 0 0 30px #fff;
+}
+
+/* 8. HYPER-GLITCH */
+.core.hyper-glitch {
+    --primary: #7cffde;
+    --primary-glow: rgba(255, 0, 64, 0.7);
+    background: var(--primary);
+    animation: glitch 3s infinite linear;
+}
+
+.core.hyper-glitch .core-center {
+    background: white;
+    box-shadow: 0 0 25px gray;
+    animation: glitch 3s infinite linear;
+}
+
+@keyframes glitch {
+    0% {
+        background: repeating-linear-gradient(45deg,
+                transparent,
+                transparent 2px,
+                red 2px,
+                blue 4px);
+    }
+
+    20% {
+        background: repeating-linear-gradient(90deg,
+                transparent,
+                transparent 2px,
+                green 2px,
+                red 4px);
+    }
+
+    40% {
+        background: repeating-linear-gradient(50deg,
+                transparent,
+                transparent 2px,
+                purple 2px,
+                blue 4px);
+    }
+
+    60% {
+        background: repeating-linear-gradient(180deg,
+                transparent,
+                transparent 2px,
+                green 2px,
+                gold 4px);
+    }
+
+    80% {
+        background: repeating-linear-gradient(120deg,
+                transparent,
+                transparent 2px,
+                gold 2px,
+                blue 4px);
+    }
+
+    100% {
+        background: repeating-linear-gradient(transparent,
+                transparent 2px,
+                lime 2px,
+                aqua 4px);
+    }
+}
+
+/* 9. ARC-STABILIZER */
+.core.arc-stabilizer {
+    --primary: #00f0ff;
+    --primary-glow: rgba(0, 240, 255, 0.7);
+    background: repeating-linear-gradient(transparent,
+            transparent 2px,
+            var(--primary) 2px,
+            var(--primary) 4px);
+    border: 1px solid var(--primary);
+}
+
+.core.arc-stabilizer .core-center {
+    background: repeating-linear-gradient(90deg,
+            transparent,
+            transparent 2px,
+            var(--primary) 2px,
+            var(--primary) 4px);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* 10. PHOENIX-FLAME */
+.core.phoenix-flame {
+    --primary: #ff6a00;
+    --primary-glow: rgba(255, 106, 0, 0.7);
+    background: radial-gradient(circle, #ffaa00 0%, #ff3300 100%);
+    animation: flame-flicker 2s ease-in-out infinite;
+}
+
+@keyframes flame-flicker {
+
+    0%,
+    100% {
+        opacity: 0.9;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.core.phoenix-flame .core-center {
+    background: #fff;
+}
+
+/* 11. MONOLITH-CORE */
+.core.monolith-core {
+    --primary: #e0e0e0;
+    --primary-glow: rgba(224, 224, 224, 0.7);
+    background: var(--primary);
+    position: relative;
+}
+
+.core.monolith-core::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+    background-color: white;
+    position: absolute;
+    border-radius: 100%;
+    animation: moon_move 4s linear infinite;
+}
+
+@keyframes moon_move {
+    0% {
+        top: 46%;
+        left: 10%;
+        transform: scale(0.6, 0.6);
+    }
+
+    10% {
+        top: 48%;
+        left: 20%;
+        transform: scale(1, 1);
+    }
+
+    25% {
+        top: 46%;
+        left: 45%;
+        transform: scale(1.4, 1.4);
+    }
+
+    40% {
+        top: 48%;
+        left: 70%;
+        transform: scale(1, 1);
+    }
+
+    50% {
+        top: 46%;
+        left: 80%;
+        transform: scale(0.6, 0.6);
+    }
+
+    75% {
+        top: 46%;
+        left: 45%;
+        transform: scale(0.2, 0.2);
+        z-index: 0;
+    }
+
+    100% {
+        top: 46%;
+        left: 10%;
+        transform: scale(0.6, 0.6);
+    }
+}
+
+.core.monolith-core .core-center {
+    background: var(--primary);
+    box-shadow: 0 0 20px var(--primary);
+    z-index: 1;
+}
+
+/* 12. VECTOR-FIELD */
+.core.vector-field {
+    --primary: #00ffcc;
+    --primary-glow: rgba(0, 255, 204, 0.7);
+    background: repeating-linear-gradient(transparent,
+            transparent 5px,
+            var(--primary) 5px,
+            var(--primary) 10px);
+}
+
+.core.vector-field .core-center {
+    background: #000;
+    border: 2px solid var(--primary);
+}
+
+/* 13. SINGULARITY */
+.core.singularity {
+    --primary: #ffffff;
+    --primary-glow: rgba(255, 255, 255, 0.3);
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.core.singularity .core-center {
+    display: none;
+}
+
+.core.singularity .core-inner::before {
+    content: '';
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff);
+    box-shadow: 0 0 20px white;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+/* 14. AETHER-ORB */
+.core.aether-orb {
+    --primary: #b967ff;
+    --primary-glow: rgba(185, 103, 255, 0.6);
+    background: radial-gradient(circle at 40% 40%, #b967ff, #00f0ff, #8a2be2);
+}
+
+.core.aether-orb .core-inner,
+.core.aether-orb .core-center {
+    display: none;
+}
+
+/* 15. INDUSTRIAL-PISTON */
+.core.industrial-piston {
+    --primary: #ffaa00;
+    --primary-glow: rgba(255, 170, 0, 0.7);
+    background: #111;
+    border: 2px solid #333;
+}
+
+.core.industrial-piston .core-inner {
+    background: linear-gradient(90deg, #333, var(--primary), #333);
+    animation: piston 1.5s ease-in-out infinite;
+}
+
+@keyframes piston {
+
+    0%,
+    100% {
+        transform: translateX(-20%);
+    }
+
+    50% {
+        transform: translateX(20%);
+    }
+}
+
+.core.industrial-piston .core-center {
+    display: none;
+}
+
+/* 16. QUANTUM-LOCK */
+.core.quantum-lock {
+    --primary: #00ffff;
+    --primary-glow: rgba(0, 255, 255, 0.7);
+    background: repeating-linear-gradient(45deg,
+            #000,
+            #000 5px,
+            #111 5px,
+            #111 10px);
+    border: 1px solid var(--primary);
+}
+
+.core.quantum-lock .core-inner::before {
+    content: '◈';
+    position: absolute;
+    font-size: 32px;
+    color: var(--primary);
+    text-shadow: 0 0 10px var(--primary);
+    animation: rotate 10s linear infinite;
+}
+
+/* ====================== ПРОСТОЙ HOVER ЭФФЕКТ ====================== */
+.core:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 30px var(--primary-glow));
+    z-index: 1000;
+}
+
+/* ====================== КОНСОЛЬ И ОСТАЛЬНЫЕ ЭЛЕМЕНТЫ ====================== */
+.console-history {
+    max-height: 400px;
+    overflow-y: auto;
+    text-align: left;
+    padding: 10px 0;
+}
+
+.console-history::-webkit-scrollbar {
+    width: 6px;
+}
+
+.console-history::-webkit-scrollbar-thumb {
+    background: var(--primary-glow);
+    border-radius: 3px;
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background: var(--surface);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    font-size: .9em;
+    transition: .3s;
+}
+
+.message.system {
+    border-left: 3px solid var(--primary);
+    margin-right: 20%;
+}
+
+.message.user {
+    color: var(--secondary);
+    border-right: 3px solid var(--secondary);
+    margin-left: 20%;
+    justify-content: flex-end;
+    background: rgba(255, 255, 255, 0.1);
+    text-align: right;
+}
+
+.icon {
+    font-size: 1.2em;
+    padding: 0 10px;
+}
+
+.message.system .icon {
+    color: var(--primary);
+}
+
+.message.user .icon {
+    color: var(--secondary);
+}
+
+.settings-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: var(--text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    transition: .3s;
+    z-index: 20;
+}
+
+.settings-button:hover {
+    color: var(--primary);
+    transform: rotate(90deg) scale(1.2);
+}
+
+.watch {
+    width: 100%;
+    max-width: 350px;
+    min-height: 50px;
+    background: var(--surface);
+    border-right: 1px solid rgba(255, 255, 255, .1);
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    border-top-right-radius: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.time {
+    font-size: 20px;
+    color: var(--primary);
+    text-shadow: 0 0 8px var(--primary-glow);
+}
+
+.command {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 350px;
+    min-height: 100px;
+    background: var(--surface);
+    border-left: 1px solid rgba(255, 255, 255, .1);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    border-bottom-left-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.command_text {
+    color: var(--text);
+    font-size: 1em;
+}
+
+.command::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 5px;
+    background: var(--primary);
+    animation: var(--after-animation, none);
+}
+
+@keyframes translating {
+    from {
+        right: -40%
+    }
+
+    to {
+        right: 0
+    }
+}
+
+@keyframes translating_alter {
+    from {
+        right: 0
+    }
+
+    to {
+        right: -40%
+    }
+}
+
+@keyframes waiting {
+    from {
+        width: 0%
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+/* ====================== АДАПТИВНОСТЬ ====================== */
+@media (max-width: 768px) {
+    .core {
+        width: 160px;
+        height: 160px;
+    }
+
+    .core[data-size="small"] {
+        width: 120px;
+        height: 120px;
+    }
+
+    .core[data-size="large"] {
+        width: 200px;
+        height: 200px;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .console-history {
+        max-height: 350px;
+    }
+}

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки JARVIS</title>
+    <style>
+        /* ИСПРАВЛЕНИЕ: Полная темная тема для читаемости */
+        :root {
+            --primary: #00f0ff;
+            --primary-glow: rgba(0, 240, 255, 0.4);
+            --secondary: #b967ff;
+            --bg: #0a0a12;
+            --surface: rgba(255, 255, 255, 0.08);
+            --surface-hover: rgba(0, 240, 255, 0.05);
+            --text: #ffffff;
+            --text-muted: #a0a0c0;
+            --input-bg: rgba(255, 255, 255, 0.1);
+            --danger: #ff4d4d;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 20px;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px var(--primary-glow);
+            padding-top: 10px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .setting-group {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 3px solid var(--primary);
+            background: var(--surface);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .setting-group:hover {
+            background: var(--surface-hover);
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .setting-field {
+            margin-bottom: 15px;
+        }
+
+        p.description {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-top: 5px;
+            margin-bottom: 0;
+            line-height: 1.4;
+            padding-left: 10px;
+        }
+
+        /* --- Стили для ввода текста и выбора --- */
+        input[type="text"],
+        select,
+        textarea,
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            margin-top: 8px;
+            background: var(--input-bg);
+            border: 1px solid var(--primary-glow);
+            color: var(--text);
+            border-radius: 4px;
+            font-size: 0.9em;
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+            width: auto;
+            min-width: 150px;
+        }
+
+        option{
+            background-color: black;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85em;
+        }
+
+        /* --- Стили для переключателя (Toggle Switch) --- */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary);
+            box-shadow: 0 0 5px var(--primary-glow);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Кнопки */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        #reset-button {
+            background: var(--danger);
+            color: var(--text);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        #reset-button:hover {
+            background: #cc0000;
+        }
+
+        #save-button {
+            background: var(--primary);
+            color: var(--bg);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Настройки функционала</h2>
+
+    <div class="setting-group">
+        <label for="write-mode">
+            <span>Постоянный режим письма</span>
+            <label class="switch">
+                <input type="checkbox" id="write-mode">
+                <span class="slider"></span>
+            </label>
+        </label>
+        <p class="description">Активирует режим, где весь распознанный текст автоматически вводится, пока не будет
+            сказано "стоп".</p>
+    </div>
+
+    <div class="setting-group">
+        <div class="setting-field">
+            <label for="volume-threshold">Порог громкости активации (5-50)</label>
+            <input type="number" id="volume-threshold" min="5" max="50" step="1" style="width: 100px;">
+        </div>
+        <p class="description">Чем выше значение, тем громче должен быть звук для начала распознавания речи (по
+            умолчанию 20).</p>
+    </div>
+
+    <h2>Настройки персонализации</h2>
+
+    <div class="setting-group">
+        <div class="setting-field">
+            <label for="addressing-term">Слово-обращение</label>
+            <input type="text" id="addressing-term" placeholder="Например: сэр, хозяин">
+            <p class="description">Слово, которое JARVIS будет использовать при обращении к вам в системных сообщениях.
+            </p>
+        </div>
+    </div>
+
+    <div class="setting-group">
+        <div class="setting-field">
+            <label for="core-style">Тема ядра</label>
+            <select id="core-style">
+                <option value="hexa-reactor">1. HEXA-REACTOR</option>
+                <option value="chrono-fluid">2. CHRONO-FLUID</option>
+                <option value="data-echo">3. DATA-ECHO</option>
+                <option value="graviton-well">4. GRAVITON-WELL</option>
+                <option value="sentinel-eye">5. SENTINEL-EYE</option>
+                <option value="bio-synth">6. BIO-SYNTH</option>
+                <option value="flux-capacitor">7. FLUX-CAPACITOR</option>
+                <option value="hyper-glitch">8. HYPER-GLITCH</option>
+                <option value="arc-stabilizer">9. ARC-STABILIZER</option>
+                <option value="phoenix-flame">10. PHOENIX-FLAME</option>
+                <option value="monolith-core">11. MONOLITH-CORE</option>
+                <option value="vector-field">12. VECTOR-FIELD</option>
+                <option value="singularity">13. SINGULARITY</option>
+                <option value="aether-orb">14. AETHER-ORB</option>
+                <option value="industrial-piston">15. INDUSTRIAL-PISTON</option>
+                <option value="quantum-lock">16. QUANTUM-LOCK</option>
+            </select>
+            <p class="description">Выбор цветовой схемы, формы и уникального визуального стиля для центрального ядра
+                JARVIS.</p>
+        </div>
+
+        <div class="setting-field">
+            <label for="bg-color">Цвет фона</label>
+            <select id="bg-color">
+                <option value="default">Темно-синий (по умолчанию)</option>
+                <option value="dark-gray">Темно-серый</option>
+                <option value="black">Абсолютно черный</option>
+            </select>
+            <p class="description">Основной цвет фона приложения.</p>
+        </div>
+
+        <div class="setting-field">
+            <label for="core-size">Размер ядра</label>
+            <select id="core-size">
+                <option value="small">Маленький</option>
+                <option value="medium">Средний (по умолчанию)</option>
+                <option value="large">Большой</option>
+            </select>
+            <p class="description">Размер центрального визуального элемента.</p>
+        </div>
+    </div>
+
+    <h2>Настройки путей и команд</h2>
+
+    <div class="setting-group">
+        <div class="setting-field">
+            <label for="music-path">Путь к папке с музыкой</label>
+            <input type="text" id="music-path" placeholder="Например: ~/Музыка/funks">
+            <p class="description">Абсолютный путь к папке, где JARVIS ищет MP3/MP4 файлы для воспроизведения.
+                Используйте `~/` для домашней директории.</p>
+        </div>
+
+        <div class="setting-field">
+            <label for="app-keywords">Команды запуска приложений (JSON)</label>
+            <textarea id="app-keywords" placeholder='{ "ключевое слово": "команда_запуска" }'></textarea>
+            <p id="appKeywords-error" style="color: var(--danger); font-size: 0.8em; margin-top: 5px; display: none;">
+                Ошибка: Некорректный формат JSON.</p>
+            <p class="description">Позволяет добавлять свои команды: `{"ключевое слово": "команда_в_терминале"}`.</p>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button id="reset-button">Сбросить настройки</button>
+        <button id="save-button" onclick="sendSettingsUpdate()">Сохранить настройки</button>
+    </div>
+
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        // --- Элементы управления ---
+        const writeModeEl = document.getElementById('write-mode');
+        const volumeThresholdEl = document.getElementById('volume-threshold');
+
+        const addressingTermEl = document.getElementById('addressing-term');
+        const coreStyleEl = document.getElementById('core-style');
+        const bgColorEl = document.getElementById('bg-color');
+        const coreSizeEl = document.getElementById('core-size');
+
+        const musicPathEl = document.getElementById('music-path');
+        const appKeywordsEl = document.getElementById('app-keywords');
+        const appKeywordsErrorEl = document.getElementById('appKeywords-error');
+        const resetButton = document.getElementById('reset-button');
+        const saveButton = document.getElementById('save-button');
+
+
+        // =========================================================================
+        // ФУНКЦИИ-ПОМОЩНИКИ для App Keywords
+        // =========================================================================
+
+        function parseAppKeywords(rawText) {
+            const appKeywordsObject = {};
+            const lines = rawText.trim().split('\n');
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+                if (trimmedLine) {
+                    const separatorIndex = trimmedLine.indexOf(':');
+                    if (separatorIndex > 0) {
+                        const key = trimmedLine.substring(0, separatorIndex).trim().toLowerCase();
+                        const command = trimmedLine.substring(separatorIndex + 1).trim();
+                        if (key && command) {
+                            appKeywordsObject[key] = command;
+                        }
+                    }
+                }
+            }
+            return appKeywordsObject;
+        }
+
+        function formatAppKeywords(keywordsObject) {
+            if (typeof keywordsObject !== 'object' || keywordsObject === null) {
+                return '';
+            }
+            return Object.keys(keywordsObject)
+                .map(key => `${key}: ${keywordsObject[key]}`)
+                .join('\n');
+        }
+
+        // --- 1. ЗАГРУЗКА И ПРИМЕНЕНИЕ ЗНАЧЕНИЙ ---
+
+        ipcRenderer.send('settings-request-initial');
+
+        // ГЛАВНОЕ ИСПРАВЛЕНИЕ: Используем проверку !== undefined вместо ||
+        ipcRenderer.on('settings-send-initial', (event, settings) => {
+            console.log('Настройки получены:', settings);
+
+            // Базовые настройки
+            // aiEnabledEl.checked = settings.aiEnabled; // УДАЛЕНО
+            writeModeEl.checked = settings.writeMode;
+            volumeThresholdEl.value = settings.volumeThreshold !== undefined ? parseInt(settings.volumeThreshold, 10) : 20;
+
+            // Настройки персонализации
+            addressingTermEl.value = settings.addressingTerm !== undefined ? settings.addressingTerm : 'сэр';
+            coreStyleEl.value = settings.coreStyle !== undefined ? settings.coreStyle : 'hexa-reactor';
+            bgColorEl.value = settings.bgColor !== undefined ? settings.bgColor : 'default';
+            coreSizeEl.value = settings.coreSize !== undefined ? settings.coreSize : 'medium';
+
+            // Настройки путей/команд
+            musicPathEl.value = settings.musicPath !== undefined ? settings.musicPath : '~/Музыка/funks';
+
+            // App Keywords
+            try {
+                appKeywordsEl.value = formatAppKeywords(settings.appKeywords);
+                appKeywordsErrorEl.style.display = 'none';
+            } catch (e) {
+                appKeywordsEl.value = '';
+                appKeywordsErrorEl.textContent = 'Ошибка загрузки appKeywords.';
+                appKeywordsErrorEl.style.display = 'block';
+            }
+        });
+
+        // --- 2. СБОРКА И ОТПРАВКА ОБНОВЛЕННЫХ НАСТРОЕК (SAVE) ---
+
+        function sendSettingsUpdate() {
+            let appKeywordsObject = parseAppKeywords(appKeywordsEl.value);
+            appKeywordsErrorEl.style.display = 'none';
+
+            const newSettings = {
+                // Функционал
+                // aiEnabled: aiEnabledEl.checked, // УДАЛЕНО
+                writeMode: writeModeEl.checked,
+                volumeThreshold: parseInt(volumeThresholdEl.value, 10),
+
+                // Персонализация
+                addressingTerm: addressingTermEl.value.trim() || 'сэр', // Оставляем || 'сэр' на случай, если пользователь удалил весь текст
+                coreStyle: coreStyleEl.value,
+                bgColor: bgColorEl.value,
+                coreSize: coreSizeEl.value,
+
+                // Пути/Команды
+                musicPath: musicPathEl.value.trim(), // Оставляем пустое значение, если пользователь очистил
+                appKeywords: appKeywordsObject
+            };
+
+            ipcRenderer.send('settings-update', newSettings);
+
+            alert('Настройки сохранены и применены!');
+        }
+
+        // --- 3. СБРОС НАСТРОЕК ---
+
+        resetButton.addEventListener('click', () => {
+            const confirmed = confirm('Вы уверены, что хотите сбросить все настройки на заводские по умолчанию?');
+            if (confirmed) {
+                ipcRenderer.send('settings-reset-to-default');
+                alert('Настройки сброшены на по умолчанию и применены!');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="settings-button" id="settings-button">
+        <i class="fas fa-cog"></i>
+    </div>
+    <div class="container">
+        <div class="core" id="core">
+            <div class="core-inner">
+                <div class="core-center"></div>
+            </div>
+        </div>
+
+        <div class="console-history" id="console-history"></div>
+    </div>
+    <div class="watch">
+        <span class="time"></span>
+    </div>
+    <div class="command">
+        <h3 class="command_text"></h3>
+    </div>
+    <script>
+        const { ipcRenderer } = require('electron'); // Используем текущий метод подключения
+
+        const settingsButton = document.getElementById('settings-button');
+        settingsButton.addEventListener('click', () => {
+            ipcRenderer.send('open-setting')
+        });
+
+        const watch = document.querySelector('.watch');
+        const time_el = document.querySelector('.time');
+        // watch.style.left = `${screen.availHeight}`; // Эту строку лучше поправить в CSS
+        function time() {
+            let data_time = new Date();
+            let second = data_time.getSeconds();
+            let min = data_time.getMinutes();
+            let hour = data_time.getHours();
+            // Добавляем нули для красоты
+            const pad = (num) => String(num).padStart(2, '0');
+            time_el.textContent = `${pad(hour)}:${pad(min)}:${pad(second)}`;
+        }
+        time();
+        setInterval(time, 1000);
+
+        const consoleHistory = document.getElementById('console-history');
+        const core = document.getElementById('core');
+        const body = document.body;
+
+        function applyVisualSettings(settings) {
+            const coreStyle = settings.coreStyle || 'quantum-lock';
+            const bgColor = settings.bgColor || 'default';
+            const coreSize = settings.coreSize || 'medium';
+
+            // 1. Применяем стиль к BODY (это поменяет переменные цветов для всего окна)
+            body.setAttribute('data-style', coreStyle);
+
+            // 2. Применяем bgColor
+            body.setAttribute('data-bg', bgColor);
+
+            // 3. Настраиваем само ядро (класс и размер)
+            const classesToRemove = Array.from(core.classList).filter(c => c !== 'core');
+            core.classList.remove(...classesToRemove);
+            core.classList.add(coreStyle);
+            core.setAttribute('data-size', coreSize);
+
+            console.log(`Интерфейс синхронизирован со стилем: ${coreStyle}`);
+        }
+
+        ipcRenderer.on('apply-visual-settings', (event, settings) => {
+            applyVisualSettings(settings);
+        });
+
+        // ---------------------- ЛОГИКА КОНСОЛИ ----------------------
+
+        ipcRenderer.on('append-message', (event, message, sender) => {
+            appendMessage(message, sender);
+        });
+
+        // Функция печати теперь принимает элемент для текста
+        function typeMessage(element, text) {
+            let i = 0;
+            element.parentElement.classList.add('typing');
+
+            const typingInterval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    consoleHistory.scrollTop = consoleHistory.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    element.parentElement.classList.remove('typing');
+                }
+            }, 30);
+        }
+
+        function appendMessage(message, sender) {
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${sender}`;
+
+            const iconEl = document.createElement('span');
+            iconEl.className = 'icon';
+
+            const textContentEl = document.createElement('span');
+            textContentEl.className = 'text-content';
+
+            if (sender === 'system') {
+                iconEl.innerHTML = '<i class="fas fa-robot"></i>';
+                messageEl.appendChild(iconEl);
+                messageEl.appendChild(textContentEl);
+
+                typeMessage(textContentEl, message);
+
+                // Анимация ядра при системном сообщении
+                core.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    core.style.transform = 'scale(1)';
+                }, 200);
+            } else {
+                iconEl.innerHTML = '<i class="fas fa-user"></i>';
+                textContentEl.textContent = message;
+
+                messageEl.appendChild(textContentEl);
+                messageEl.appendChild(iconEl);
+                consoleHistory.scrollTop = consoleHistory.scrollHeight;
+            }
+
+            consoleHistory.appendChild(messageEl);
+        }
+
+        ipcRenderer.on('send-command', (e, mes) => {
+            const el = document.querySelector('.command');
+            const el_text = document.querySelector('.command_text');
+            el.style.animation = 'none';
+            el.offsetHeight;
+            el_text.textContent = mes;
+            el.style.display = 'flex';
+            el.style.animation = 'translating 1s forwards';
+            el.style.setProperty('--after-animation', 'waiting 8s linear forwards');
+            setTimeout(() => {
+                el.style.animation = 'translating_alter 1s forwards';
+                el.style.setProperty('--after-animation', 'none');
+
+                setTimeout(() => {
+                    el.style.display = 'none';
+                }, 1000);
+
+            }, 8000);
+        });
+
+        appendMessage("Jarvis онлайн", 'system');
+    </script>
+</body>
+
+</html>
